@@ -1,1 +1,1 @@
-__all__ = ["board_tests"]
+__all__ = ["test_board"]

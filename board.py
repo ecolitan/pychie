@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf8 -*-
 
-from tests.board_tests import TestBoard
-
 class Board(dict):
     def __init__(self):
         """initialise empty board dict"""
@@ -23,7 +21,9 @@ class Board(dict):
         self.pos_list = sorted(self.keys())
     
     def setupPosition(self, position):
-        """Set the position from a position string"""
+        """Set the position from a position string
+        raise if unsuccessful or return None
+        """
         index = 0
         for char in position:
             if char in list('rnbqkpRNBQKP'):
@@ -31,10 +31,16 @@ class Board(dict):
                 index += 1
             else:
                 index += int(char)
+        return None
         
     def possibleKingMove(self, square):
         """Return list of possible squares a King on a given square can move to."""
-        pass
+        final = []
+        possibles = [tuple(sum(x) for x in zip(square, (m,n))) for m in range(-1,2) for n in range(-1,2) if (m,n) != (0,0)]
+        for pos in possibles:
+            if pos in self.pos_list:
+                final.append(pos)
+        return final
         
     def possibleQueenMove(self, square):
         """Return list of possible squares a Queen on a given square can move to."""
@@ -59,7 +65,7 @@ class Board(dict):
     def printBoard(self):
         """print a pretty board"""
         col = 0
-        for pos in [(i,j) for i in range(0,8) for j in range(0,8)][::-1]:
+        for pos in [(i,j) for i in range(0,8) for j in range(0,8)]:
             if self[pos] is None:
                 print(" . ", end="")
             else:
@@ -69,7 +75,9 @@ class Board(dict):
                 col = 0
                 print()
                 
-starting_position = """rnbqkbnrpppppppp8888PPPPPPPPRNBQKBNR"""
+starting_position = """rnbqkbnrpppppppp88p78PPPPPPPPRNBQKBNR"""
 A = Board()
 A.setupPosition(starting_position)
-A.printBoard()
+#~ A.printBoard()
+#~ A.possibleKingMove((0,0))
+
