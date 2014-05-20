@@ -151,18 +151,16 @@ class Board(dict):
     
     def printBoard(self):
         """print a pretty board"""
-        col = 0
-        for pos in [(i,j) for i in range(0,8) for j in range(0,8)]:
-            if self[pos] is None:
-                print(" . ", end="")
-            else:
-                print(" " + self[pos] + " ", end="")
-            col += 1
-            if col == 8:
-                col = 0
-                print()
-                
-starting_position = """rnbqkbnrpppppppp88p78PPPPPPPPRNBQKBNR"""
+
+        for m,n in ((-8,None),(-16,-8),(-24,-16),(-32,-24),(-40,-32),(-48,-40),(-56,-48),(-64,-56)):
+            for pos in [self[pos] for pos in self.pos_list[m:n]]:
+                if pos is None:
+                    print(" . ", end="")
+                else:
+                    print(" " + pos + " ", end="")
+            print()
+
+starting_position = """rnbqkbnrpppppppp8888PPPPPPPPRNBQKBNR"""
 A = Board()
 A.setupPosition(starting_position)
 #~ A.printBoard()
