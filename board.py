@@ -39,19 +39,111 @@ class Board(dict):
         
     def possibleQueenMove(self, square):
         """Return list of possible squares a Queen on a given square can move to."""
-        pass
+        # combile rook and bishop moves
+        bishop = self.possibleBishopMove(square)
+        rook = self.possibleRookMove(square)
+        allpos = rook + bishop
+        return sorted(allpos)
         
     def possibleBishopMove(self, square):
         """Return list of possible squares a Bishop on a given square can move to."""
-        pass
+        final = []
+        
+        # plus,plus
+        xpos = square[0]
+        ypos = square[1]
+        while True:
+            xpos += 1
+            ypos += 1
+            if (xpos,ypos) in self.pos_list:
+                final.append((xpos,ypos))
+            else:
+                break
+        # plus,minus
+        xpos = square[0]
+        ypos = square[1]
+        while True:
+            xpos += 1
+            ypos -= 1
+            if (xpos,ypos) in self.pos_list:
+                final.append((xpos,ypos))
+            else:
+                break
+        # minus,plus
+        xpos = square[0]
+        ypos = square[1]
+        while True:
+            xpos -= 1
+            ypos += 1
+            if (xpos,ypos) in self.pos_list:
+                final.append((xpos,ypos))
+            else:
+                break
+        # minus,minus
+        xpos = square[0]
+        ypos = square[1]
+        while True:
+            xpos -= 1
+            ypos -= 1
+            if (xpos,ypos) in self.pos_list:
+                final.append((xpos,ypos))
+            else:
+                break
+        
+        return sorted(final)
         
     def possibleKnightMove(self, square):
         """Return list of possible squares a Knight on a given square can move to."""
-        pass
+        xpos = square[0]
+        ypos = square[1]
+        final = []
+        
+        for comb in ((-1,2),(-2,1),(-2,-1),(-1,-2),(1,2),(2,1),(2,-1),(1,-2)):
+            if tuple(sum(x) for x in zip(square, comb)) in self.pos_list:
+                final.append(tuple(sum(x) for x in zip(square, comb)))
+        return sorted(final)
         
     def possibleRookMove(self, square):
         """Return list of possible squares a Rook on a given square can move to."""
-        pass
+        final = []
+
+        # rows
+        xpos = square[0]
+        ypos = square[1]
+        while True:
+            xpos += 1
+            if (xpos,ypos) in self.pos_list:
+                final.append((xpos,ypos))
+            else:
+                break
+        xpos = square[0]
+        while True:
+            xpos -= 1
+            if (xpos,ypos) in self.pos_list:
+                final.append((xpos,ypos))
+            else:
+                break
+                
+        # cols
+        xpos = square[0]
+        ypos = square[1]
+        while True:
+            ypos += 1
+            if (xpos,ypos) in self.pos_list:
+                final.append((xpos,ypos))
+            else:
+                break
+                xpos = square[0]
+        ypos = square[1]
+        while True:
+            ypos -= 1
+            if (xpos,ypos) in self.pos_list:
+                final.append((xpos,ypos))
+            else:
+                break
+                xpos = square[0]
+
+        return sorted(final)
         
     def possiblePawnMove(self, square):
         """Return list of possible squares a Pawn on a given square can move to."""
@@ -74,5 +166,3 @@ starting_position = """rnbqkbnrpppppppp88p78PPPPPPPPRNBQKBNR"""
 A = Board()
 A.setupPosition(starting_position)
 #~ A.printBoard()
-#~ A.possibleKingMove((0,0))
-
