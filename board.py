@@ -14,20 +14,112 @@ class Board(dict):
             (0,6): None, (1,6): None, (2,6): None, (3,6): None, (4,6): None, (5,6): None, (6,6): None, (7,6): None,
             (0,7): None, (1,7): None, (2,7): None, (3,7): None, (4,7): None, (5,7): None, (6,7): None, (7,7): None })
         self.pos_list = sorted(self.keys())
-    
+        self.castle = {'w-king': False, 'w-queen': False, 'b-king': False, 'b-queen': False}
+        self.ep = None
+        self.halfmove_count = 0
+        self.fullmove_count = 1
+        
     def setupPosition(self, position):
-        """Set the position from a position string
+        """Set the position from a FEN position string
         raise if unsuccessful or return None
         """
-        index = 0
-        for char in position:
-            if char in list('rnbqkpRNBQKP'):
-                self[self.pos_list[index]] = char
-                index += 1
-            else:
-                index += int(char)
-        return None
+        #~ index = 0
+        #~ for char in position:
+            #~ if char in list('rnbqkpRNBQKP'):
+                #~ self[self.pos_list[index]] = char
+                #~ index += 1
+            #~ else:
+                #~ index += int(char)
+        #~ return None
         
+        index = 0
+        field = 0
+        for char in position:
+            if field == 0:
+                #Position
+                if char in list('rnbqkpRNBQKP'):
+                    self[self.pos_list[index]] = char
+                    index += 1
+                elif char in list('12345678'):
+                    index += int(char)
+                elif char == '/':
+                    continue
+                elif char == ' ':
+                    field += 1
+                    continue
+                else:
+                    raise ValueError
+            elif field == 1:
+                #To-Move
+                if char in list('wW'):
+                    self.to_move = 'w'
+                elif char in list('bB'):
+                    self.to_move = 'b'
+                elif char == ' ':
+                    field += 1
+                else:
+                    raise ValueError
+            elif field == 2:
+                #Castling Rights
+                if char == 'K':
+                    self.castle['w-king'] = True
+                elif char == 'Q':
+                    self.castle['w-queen'] = True
+                elif char == 'k':
+                    self.castle['b-king'] = True
+                elif char == 'q':
+                    self.castle['b-queen'] = True
+                elif char == '-':
+                    continue
+                elif char == ' ':
+                    field += 1
+                else:
+                    raise ValueError
+            elif field == 3:
+                #EnPassant Square
+                if char == '-':
+                    self.ep = None
+                elif char in list('abcdefgHABCDEFGH'):
+                    alg_col = char
+                elif char in list('12345678'):
+                    alg_row = char
+                    #TODO Converter function algebraic to numeric tuple.
+                    self.ep = (alg_col,alg_row)
+                elif char == ' ':
+                    field += 1
+                else:
+                    raise ValueError
+            elif field == 4:
+                #halfmove clock
+                hm_l = []
+                if char in list('0123456789'):
+                    hm_l.append(char)
+                elif char == ' ':
+                    if hm_l:
+                        self.halfmove_count = int(''.join(map(str,hm_l)))
+                    else:
+                        self.halfmove_count = 0
+                    field += 1
+                else:
+                    raise ValueError
+            elif field == 5:
+                #Fullmove Counter
+                fm_l = []
+                if char in list('0123456789'):
+                    fm_l.append(char)
+                elif char == ' ':
+                    if fm_l:
+                        self.fullmove_count = int(''.join(map(str,fm_l)))
+                    else:
+                        self.fullmove_count = 1
+                    field += 1
+                else:
+                    raise ValueError
+            elif field == 6:
+                return None
+            else:
+                raise Exception
+                
     def possibleKingMove(self, square):
         """Return list of possible squares a King on a given square can move to."""
         final = []
@@ -148,7 +240,16 @@ class Board(dict):
     def possiblePawnMove(self, square):
         """Return list of possible squares a Pawn on a given square can move to."""
         pass
-    
+        if self.pieceColor(square) == 'w':
+            sec_rank = ((0,1),(1,1),(2,1),(3,1),(4,1),(5,1),(6,1),(7,1))
+            if square in sec_rank:
+                pass
+                
+        elif self.pieceColor(square) == 'w':
+            sec_rank = ((6,0),(6,1),(6,2),(6,3),(6,4),(6,5),(6,6),(6,7))
+            if square in sec_rank:
+                pass
+        
     def printBoard(self):
         """print a pretty board"""
 
@@ -159,8 +260,17 @@ class Board(dict):
                 else:
                     print(" " + pos + " ", end="")
             print()
+    
+    def pieceColor(self, square):
+        """Return color of piece on a square or None"""
+        if self[square] in list('rnbqkp'):
+            return 'w'
+        elif self[square] in list('rnbqkp'.upper()):
+            return 'b'
+        else:
+            return None
 
-starting_position = """rnbqkbnrpppppppp8888PPPPPPPPRNBQKBNR"""
+starting_position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 A = Board()
 A.setupPosition(starting_position)
 #~ A.printBoard()
