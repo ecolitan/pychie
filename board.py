@@ -253,13 +253,13 @@ class Board(dict):
         
     def printBoard(self):
         """print a pretty board"""
-
-        for m,n in ((-8,None),(-16,-8),(-24,-16),(-32,-24),(-40,-32),(-48,-40),(-56,-48),(-64,-56)):
-            for pos in [self[pos] for pos in self.pos_list[m:n]]:
-                if pos is None:
+        
+        for y in [7,6,5,4,3,2,1,0]:
+            for x in [0,1,2,3,4,5,6,7]:
+                if self[x,y] is None:
                     print(" . ", end="")
                 else:
-                    print(" " + pos + " ", end="")
+                    print(" " + self[x,y] + " ", end="")
             print()
     
     def pieceColor(self, square):
@@ -273,5 +273,4 @@ class Board(dict):
 
 starting_position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 A = Board()
-A.setupPosition(starting_position)
-#~ A.printBoard()
+#~ A.setupPosition(starting_position)
