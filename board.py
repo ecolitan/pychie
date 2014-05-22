@@ -24,25 +24,26 @@ class Board(dict):
         """Set the position from a FEN position string
         raise if unsuccessful or return None
         """
-        #~ index = 0
-        #~ for char in position:
-            #~ if char in list('rnbqkpRNBQKP'):
-                #~ self[self.pos_list[index]] = char
-                #~ index += 1
-            #~ else:
-                #~ index += int(char)
-        #~ return None
-        
-        index = 0
+        count = 0
+        x_index = 0
+        y_index = 7
         field = 0
         for char in position:
             if field == 0:
                 #Position
                 if char in list('rnbqkpRNBQKP'):
-                    self[self.pos_list[index]] = char
-                    index += 1
+                    self[x_index,y_index] = char
+                    x_index += 1
+                    count += 1
+                    if count % 8 == 0:
+                        y_index -= 1
+                        x_index = 0
                 elif char in list('12345678'):
-                    index += int(char)
+                    x_index += int(char)
+                    count += int(char)
+                    if count % 8 == 0:
+                        y_index -= 1
+                        x_index = 0
                 elif char == '/':
                     continue
                 elif char == ' ':
@@ -273,4 +274,22 @@ class Board(dict):
 
 starting_position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 A = Board()
-#~ A.setupPosition(starting_position)
+A.setupPosition(starting_position)
+A.printBoard()
+#~ A[(0,0)] = 'R'
+#~ A[(1,0)] = 'N'
+#~ A[(2,0)] = 'B'
+#~ A[(3,0)] = 'Q'
+#~ A[(4,0)] = 'K'
+#~ A[(5,0)] = 'B'
+#~ A[(6,0)] = 'N'
+#~ A[(7,0)] = 'R'
+#~ A[(0,1)] = 'P'
+#~ A[(1,1)] = 'P'
+#~ A[(2,1)] = 'P'
+#~ A[(3,1)] = 'P'
+#~ A[(4,1)] = 'P'
+#~ A[(5,1)] = 'P'
+#~ A[(6,1)] = 'P'
+#~ A[(7,1)] = 'P'
+#~ A.printBoard()
