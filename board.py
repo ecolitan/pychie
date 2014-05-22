@@ -83,9 +83,9 @@ class Board(dict):
                     self.ep = None
                 elif char in list('abcdefgHABCDEFGH'):
                     alg_col = char
+                    alg_col = ['a','b','c','d','e','f','g','h'].index(alg_col.lower())
                 elif char in list('12345678'):
-                    alg_row = char
-                    #TODO Converter function algebraic to numeric tuple.
+                    alg_row = int(char)
                     self.ep = (alg_col,alg_row)
                 elif char == ' ':
                     field += 1
