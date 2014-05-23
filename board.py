@@ -212,7 +212,7 @@ class Board(dict):
                 final.append(tuple(sum(x) for x in zip(square, comb)))
         return sorted(final)
         
-    def possibleRookMove(self, square):
+    def possibleRookMove(self, square, color):
         """Return list of possible squares a Rook on a given square can move to."""
         final = []
 
@@ -222,14 +222,20 @@ class Board(dict):
         while True:
             xpos += 1
             if (xpos,ypos) in self.pos_list:
-                final.append((xpos,ypos))
+                if self.pieceColor((xpos,ypos)) == color:
+                    break
+                else:
+                    final.append((xpos,ypos))
             else:
                 break
         xpos = square[0]
         while True:
             xpos -= 1
             if (xpos,ypos) in self.pos_list:
-                final.append((xpos,ypos))
+                if self.pieceColor((xpos,ypos)) == color:
+                    break
+                else:
+                    final.append((xpos,ypos))
             else:
                 break
                 
@@ -239,15 +245,21 @@ class Board(dict):
         while True:
             ypos += 1
             if (xpos,ypos) in self.pos_list:
-                final.append((xpos,ypos))
+                if self.pieceColor((xpos,ypos)) == color:
+                    break
+                else:
+                    final.append((xpos,ypos))
             else:
                 break
-                xpos = square[0]
+        xpos = square[0]
         ypos = square[1]
         while True:
             ypos -= 1
             if (xpos,ypos) in self.pos_list:
-                final.append((xpos,ypos))
+                if self.pieceColor((xpos,ypos)) == color:
+                    break
+                else:
+                    final.append((xpos,ypos))
             else:
                 break
                 xpos = square[0]
