@@ -25,8 +25,8 @@ class TestBoard(unittest.TestCase):
         Board2.setupPosition(self.empty_board)
         Board3.setupPosition(self.start_board)
                 
-        #~ self.assertEqual(sq1, Board1.possibleKingMove(k1, 'w'))        
-        #~ self.assertEqual(sq2, Board2.possibleKingMove(k2, 'w'))
+        self.assertEqual(sq1, Board1.possibleKingMove(k1, 'w'))        
+        self.assertEqual(sq2, Board2.possibleKingMove(k2, 'w'))
         self.assertEqual(sq3, Board3.possibleKingMove(k3, 'w'))
     
     @unittest.skip('')
@@ -38,15 +38,27 @@ class TestBoard(unittest.TestCase):
                       (4,3),(4,2),(4,1),(4,0),(4,5),(4,6),(4,7)])
         self.assertEqual(sq1, Board().possibleQueenMove(q1))
     
-    @unittest.skip('')    
+    #~ @unittest.skip('')    
     def test_possibleBishopMove(self):
         b1 = (0,0)
-        sq1 = sorted([(1,1),(2,2),(3,3),(4,4),(5,5),(6,6),(7,7)])
-        self.assertEqual(sq1, Board().possibleBishopMove(b1))
         b2 = (4,4)
+        b3 = (2,0)
+        
+        sq1 = sorted([(1,1),(2,2),(3,3),(4,4),(5,5),(6,6),(7,7)])
         sq2 = sorted([(0,0),(1,1),(2,2),(3,3),(5,5),(6,6),(7,7),
                       (5,3),(6,2),(7,1),(3,5),(2,6),(1,7)])
-        self.assertEqual(sq2, Board().possibleBishopMove(b2))
+        sq3 = sorted([])
+        
+        Board1 = Board()
+        Board2 = Board()
+        Board3 = Board()
+        Board1.setupPosition(self.empty_board)
+        Board2.setupPosition(self.empty_board)
+        Board3.setupPosition(self.start_board)
+        
+        #~ self.assertEqual(sq1, Board1.possibleBishopMove(b1,'w'))
+        #~ self.assertEqual(sq2, Board2.possibleBishopMove(b2,'w'))
+        self.assertEqual(sq3, Board3.possibleBishopMove(b3,'w'))
         
     @unittest.skip('')
     def test_possibleKnightMove(self):

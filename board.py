@@ -142,48 +142,60 @@ class Board(dict):
         allpos = rook + bishop
         return sorted(allpos)
         
-    def possibleBishopMove(self, square):
+    def possibleBishopMove(self, square, color):
         """Return list of possible squares a Bishop on a given square can move to."""
         final = []
         
-        # plus,plus
+        # right,up
         xpos = square[0]
         ypos = square[1]
         while True:
             xpos += 1
             ypos += 1
             if (xpos,ypos) in self.pos_list:
-                final.append((xpos,ypos))
+                if self.pieceColor((xpos,ypos)) == color:
+                    break
+                else:
+                    final.append((xpos,ypos))
             else:
                 break
-        # plus,minus
+        # right,down
         xpos = square[0]
         ypos = square[1]
         while True:
             xpos += 1
             ypos -= 1
             if (xpos,ypos) in self.pos_list:
-                final.append((xpos,ypos))
+                if self.pieceColor((xpos,ypos)) == color:
+                    break
+                else:
+                    final.append((xpos,ypos))
             else:
                 break
-        # minus,plus
+        # left,up
         xpos = square[0]
         ypos = square[1]
         while True:
             xpos -= 1
             ypos += 1
             if (xpos,ypos) in self.pos_list:
-                final.append((xpos,ypos))
+                if self.pieceColor((xpos,ypos)) == color:
+                    break
+                else:
+                    final.append((xpos,ypos))
             else:
                 break
-        # minus,minus
+        # left,down
         xpos = square[0]
         ypos = square[1]
         while True:
             xpos -= 1
             ypos -= 1
             if (xpos,ypos) in self.pos_list:
-                final.append((xpos,ypos))
+                if self.pieceColor((xpos,ypos)) == color:
+                    break
+                else:
+                    final.append((xpos,ypos))
             else:
                 break
         
