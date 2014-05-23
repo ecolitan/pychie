@@ -53,15 +53,17 @@ class TestBoard(unittest.TestCase):
         self.assertEqual(sq2, self.Board_empty.possibleBishopMove(b2,'w'))
         self.assertEqual(sq3, self.Board_start.possibleBishopMove(b3,'w'))
         
-    @unittest.skip('')
     def test_possibleKnightMove(self):
-        pass
         n1 = (0,0)
-        sq1 = sorted([(1,2),(2,1)])
-        self.assertEqual(sq1, Board().possibleKnightMove(n1))
         n2 = (4,4)
+        n3 = (1,0)
+        sq1 = sorted([(1,2),(2,1)])
         sq2 = sorted([(3,6),(2,5),(2,3),(3,2),(5,6),(6,5),(6,3),(5,2)])
-        self.assertEqual(sq2, Board().possibleKnightMove(n2))
+        sq3 = sorted([(0,2),(2,2)])
+
+        self.assertEqual(sq1, self.Board_empty.possibleKnightMove(n1,'w'))
+        self.assertEqual(sq2, self.Board_empty.possibleKnightMove(n2,'w'))
+        self.assertEqual(sq3, self.Board_start.possibleKnightMove(n3,'w'))
     
     def test_possibleRookMove(self):
         r1 = (0,0)

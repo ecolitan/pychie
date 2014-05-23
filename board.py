@@ -201,7 +201,7 @@ class Board(dict):
         
         return sorted(final)
         
-    def possibleKnightMove(self, square):
+    def possibleKnightMove(self, square, color):
         """Return list of possible squares a Knight on a given square can move to."""
         xpos = square[0]
         ypos = square[1]
@@ -210,6 +210,7 @@ class Board(dict):
         for comb in ((-1,2),(-2,1),(-2,-1),(-1,-2),(1,2),(2,1),(2,-1),(1,-2)):
             if tuple(sum(x) for x in zip(square, comb)) in self.pos_list:
                 final.append(tuple(sum(x) for x in zip(square, comb)))
+                final = [pos for pos in final if self.pieceColor(pos) != color]
         return sorted(final)
         
     def possibleRookMove(self, square, color):
