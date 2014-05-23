@@ -122,13 +122,16 @@ class Board(dict):
             else:
                 raise Exception
                 
-    def possibleKingMove(self, square):
+    def possibleKingMove(self, square, color):
         """Return list of possible squares a King on a given square can move to."""
         final = []
         possibles = [tuple(sum(x) for x in zip(square, (m,n))) for m in range(-1,2) for n in range(-1,2) if (m,n) != (0,0)]
         for pos in possibles:
             if pos in self.pos_list:
-                final.append(pos)
+                if self.pieceColor(pos) == color:
+                    continue
+                else:
+                    final.append(pos)
         return sorted(final)
         
     def possibleQueenMove(self, square):
@@ -266,16 +269,16 @@ class Board(dict):
     def pieceColor(self, square):
         """Return color of piece on a square or None"""
         if self[square] in list('rnbqkp'):
-            return 'w'
-        elif self[square] in list('rnbqkp'.upper()):
             return 'b'
+        elif self[square] in list('rnbqkp'.upper()):
+            return 'w'
         else:
             return None
 
 starting_position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 A = Board()
 A.setupPosition(starting_position)
-A.printBoard()
+#~ A.printBoard()
 #~ A[(0,0)] = 'R'
 #~ A[(1,0)] = 'N'
 #~ A[(2,0)] = 'B'

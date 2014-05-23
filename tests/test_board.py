@@ -6,20 +6,28 @@ from board import Board
 
 class TestBoard(unittest.TestCase):
 
+    def setUp(self):
+        self.empty_board = "8/8/8/8/8/8/8/8 w - - 0 1"
+        self.start_board = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+
     def test_possibleKingMove(self):
         k1 = (4,4)
         k2 = (0,0)
+        k3 = (4,0)
         sq1 = sorted([(3,3), (3,4), (3,5), (4,3), (4,5), (5,3), (5,4), (5,5)])
         sq2 = sorted([(0,1), (1,1), (1,0)])
-        p1 = "8/8/8/8/8/8/8/8 w - - 0 0"
-        p2 = "8/8/8/8/8/8/8/8 w - - 0 0"
+        sq3 = sorted([])
+        
         Board1 = Board()
         Board2 = Board()
-        Board1.setupPosition(p1)
-        Board2.setupPosition(p2)
+        Board3 = Board()
+        Board1.setupPosition(self.empty_board)
+        Board2.setupPosition(self.empty_board)
+        Board3.setupPosition(self.start_board)
                 
-        self.assertEqual(sq1, Board1.possibleKingMove(k1))        
-        self.assertEqual(sq2, Board2.possibleKingMove(k2))
+        #~ self.assertEqual(sq1, Board1.possibleKingMove(k1, 'w'))        
+        #~ self.assertEqual(sq2, Board2.possibleKingMove(k2, 'w'))
+        self.assertEqual(sq3, Board3.possibleKingMove(k3, 'w'))
     
     @unittest.skip('')
     def test_possibleQueenMove(self):
