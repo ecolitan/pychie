@@ -134,11 +134,11 @@ class Board(dict):
                     final.append(pos)
         return sorted(final)
         
-    def possibleQueenMove(self, square):
+    def possibleQueenMove(self, square, color):
         """Return list of possible squares a Queen on a given square can move to."""
         # combile rook and bishop moves
-        bishop = self.possibleBishopMove(square)
-        rook = self.possibleRookMove(square)
+        bishop = self.possibleBishopMove(square,color)
+        rook = self.possibleRookMove(square,color)
         allpos = rook + bishop
         return sorted(allpos)
         
