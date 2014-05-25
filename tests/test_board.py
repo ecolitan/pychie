@@ -9,11 +9,14 @@ class TestBoard(unittest.TestCase):
     def setUp(self):
         self.empty_board = "8/8/8/8/8/8/8/8 w - - 0 1"
         self.start_board = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+        self.test_board1 = "r1b1k2r/ppp2ppp/2nq4/3n2N1/2BP4/P7/1P1B1PPP/R2Q1K1R b kq - 2 12"
 
         self.Board_empty = Board()
         self.Board_start = Board()
+        self.Board_test1 = Board()
         self.Board_empty.setupPosition(self.empty_board)
         self.Board_start.setupPosition(self.start_board)
+        self.Board_test1.setupPosition(self.test_board1)
 
     def test_possibleKingMove(self):
         k1 = (4,4)
@@ -43,15 +46,18 @@ class TestBoard(unittest.TestCase):
         b1 = (0,0)
         b2 = (4,4)
         b3 = (2,0)
+        b4 = (2,3)
         
         sq1 = sorted([(1,1),(2,2),(3,3),(4,4),(5,5),(6,6),(7,7)])
         sq2 = sorted([(0,0),(1,1),(2,2),(3,3),(5,5),(6,6),(7,7),
                       (5,3),(6,2),(7,1),(3,5),(2,6),(1,7)])
         sq3 = sorted([])
+        sq4 = sorted([(1,4),(0,5),(1,2),(0,1),(3,4),(3,2),(4,1)])
         
         self.assertEqual(sq1, self.Board_empty.possibleBishopMove(b1,'w'))
         self.assertEqual(sq2, self.Board_empty.possibleBishopMove(b2,'w'))
         self.assertEqual(sq3, self.Board_start.possibleBishopMove(b3,'w'))
+        self.assertEqual(sq4, self.Board_test1.possibleBishopMove(b4,'w'))
         
     def test_possibleKnightMove(self):
         n1 = (0,0)
@@ -80,14 +86,17 @@ class TestBoard(unittest.TestCase):
         self.assertEqual(sq2, self.Board_empty.possibleRookMove(r2, 'w'))
         self.assertEqual(sq3, self.Board_start.possibleRookMove(r3, 'w'))
     
-    @unittest.skip('')
     def test_possiblePawnMove(self):
-        p1 = (0,2)
-        sq1 = sorted([(0,3),(0,4)])
+        p1 = (0,1)
         p2 = (4,3)
-        sq2 = (4,4)
-        self.assertEqual(sq1, Board().possiblePawnMove(p1))
-        self.assertEqual(sq2, Board().possiblePawnMove(p2))
+            
+        sq1 = sorted([(0,2),(0,3)])
+        sq2 = sorted([(4,4)])
+
+        self.assertEqual(sq1, self.Board_empty.possiblePawnMove(p1, 'w'))
+        self.assertEqual(sq2, self.Board_empty.possiblePawnMove(p2, 'w'))
+        #~ self.assertEqual(sq3, self.Board_start.possiblePawnMove(p3))
+        #~ self.assertEqual(sq4, self.Board_start.possiblePawnMove(p4))
     
     @unittest.skip('')
     def test_pieceColor(self):

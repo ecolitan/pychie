@@ -15,6 +15,7 @@ class Board(dict):
             (0,0): None, (1,0): None, (2,0): None, (3,0): None, (4,0): None, (5,0): None, (6,0): None, (7,0): None })
             
         self.pos_list = sorted(self.keys())
+        self.to_move = 'w'
         self.castle = {'w-king': False, 'w-queen': False, 'b-king': False, 'b-queen': False}
         self.ep = None
         self.halfmove_count = 0
@@ -153,7 +154,10 @@ class Board(dict):
             xpos += 1
             ypos += 1
             if (xpos,ypos) in self.pos_list:
-                if self.pieceColor((xpos,ypos)) == color:
+                if self.pieceColor((xpos,ypos)):
+                    if self.pieceColor((xpos,ypos)) == color:
+                        break
+                    final.append((xpos,ypos))
                     break
                 else:
                     final.append((xpos,ypos))
@@ -166,7 +170,10 @@ class Board(dict):
             xpos += 1
             ypos -= 1
             if (xpos,ypos) in self.pos_list:
-                if self.pieceColor((xpos,ypos)) == color:
+                if self.pieceColor((xpos,ypos)):
+                    if self.pieceColor((xpos,ypos)) == color:
+                        break
+                    final.append((xpos,ypos))
                     break
                 else:
                     final.append((xpos,ypos))
@@ -179,7 +186,10 @@ class Board(dict):
             xpos -= 1
             ypos += 1
             if (xpos,ypos) in self.pos_list:
-                if self.pieceColor((xpos,ypos)) == color:
+                if self.pieceColor((xpos,ypos)):
+                    if self.pieceColor((xpos,ypos)) == color:
+                        break
+                    final.append((xpos,ypos))
                     break
                 else:
                     final.append((xpos,ypos))
@@ -192,7 +202,10 @@ class Board(dict):
             xpos -= 1
             ypos -= 1
             if (xpos,ypos) in self.pos_list:
-                if self.pieceColor((xpos,ypos)) == color:
+                if self.pieceColor((xpos,ypos)):
+                    if self.pieceColor((xpos,ypos)) == color:
+                        break
+                    final.append((xpos,ypos))
                     break
                 else:
                     final.append((xpos,ypos))
@@ -267,18 +280,57 @@ class Board(dict):
 
         return sorted(final)
         
-    def possiblePawnMove(self, square):
+    def possiblePawnMove(self, square, color):
         """Return list of possible squares a Pawn on a given square can move to."""
-        pass
-        if self.pieceColor(square) == 'w':
-            sec_rank = ((0,1),(1,1),(2,1),(3,1),(4,1),(5,1),(6,1),(7,1))
-            if square in sec_rank:
-                pass
+        xpos = square[0]
+        ypos = square[1]
+        final = []
+        #white pawns
+        if color == 'w':
+            second_rank = ((0,1),(1,1),(2,1),(3,1),(4,1),(5,1),(6,1),(7,1))
+            if square in second_rank:
+                #step forwards
+                for step in [1,2]:
+                    if not self.isOccupied((xpos,ypos+step)):
+                        final.append((xpos,ypos+step))
+                    else:
+                        break
+            else:
+                if not self.isOccupied((xpos,ypos+1)):
+                    final.append((xpos,ypos+1))
+            #captures
+            squares = [(xpos-1,ypos+1),(xpos+1,ypos+1)]
+            for pos in squares:
+                if pos in self.pos_list:
+                    if self.pieceColor(pos) != color and self.pieceColor(pos):
+                        final.append(pos)
+            #ep
+            if self.ep in [(xpos-1,ypos),(xpos+1,ypos)]:
+                final.append(self.ep)
+            
                 
-        elif self.pieceColor(square) == 'w':
-            sec_rank = ((6,0),(6,1),(6,2),(6,3),(6,4),(6,5),(6,6),(6,7))
-            if square in sec_rank:
-                pass
+        elif color == 'b':
+            second_rank = ((6,0),(6,1),(6,2),(6,3),(6,4),(6,5),(6,6),(6,7))
+            if square in second_rank:
+                #step forwards
+                for step in [-1,-2]:
+                    if not self.isOccupied((xpos,ypos+step)):
+                        final.append((xpos,ypos+step))
+                    else:
+                        break
+            else:
+                if not self.isOccupied((xpos,ypos-1)):
+                    final.append((xpos,ypos-1))
+            #captures
+            squares = [(xpos-1,ypos-1),(xpos+1,ypos-1)]
+            for pos in squares:
+                if pos in self.pos_list:
+                    if self.pieceColor(pos) != color:
+                        final.append(pos)
+            #ep
+            if self.ep in [(xpos-1,ypos),(xpos+1,ypos)]:
+                final.append(self.ep)
+        return sorted(final)
         
     def printBoard(self):
         """print a pretty board"""
@@ -299,6 +351,13 @@ class Board(dict):
             return 'w'
         else:
             return None
+            
+    def isOccupied(self, square):
+        """Return True or False if a square is occupied"""
+        if self[square]:
+            return True
+        else:
+            return False
 
 starting_position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 A = Board()
