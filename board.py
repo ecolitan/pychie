@@ -125,6 +125,7 @@ class Board(dict):
                 
     def possibleKingMove(self, square, color):
         """Return list of possible squares a King on a given square can move to."""
+        #TODO color optional
         final = []
         possibles = [tuple(sum(x) for x in zip(square, (m,n))) for m in range(-1,2) for n in range(-1,2) if (m,n) != (0,0)]
         for pos in possibles:
@@ -135,9 +136,43 @@ class Board(dict):
                     final.append(pos)
         return sorted(final)
         
+    def possibleCastling(self):
+        """Return a dict if castling is possible right now
+        {'w-king': T|F, 'w-queen': T|F, 'b-king': T|F, 'b-queen': T|F}
+        """
+        final = {'w-king': False, 'w-queen': False, 'b-king': False, 'b-queen': False}
+        if ((self.castle['w-king']) and
+            (not self.isOccupied((5,0))) and
+            (not self.isOccupied((6,0))) and
+            (not self.isCheck((5,0), 'w')) and
+            (not self.isCheck((6,0), 'w'))):
+            final['w-king'] = True
+        elif ((self.castle['w-queen']) and
+            (not self.isOccupied((3,0))) and
+            (not self.isOccupied((2,0))) and
+            (not self.isOccupied((1,0))) and
+            (not self.isCheck((3,0), 'w')) and
+            (not self.isCheck((2,0), 'w'))):
+            final['w-queen'] = True
+        elif ((self.castle['b-king']) and
+            (not self.isOccupied((5,7))) and
+            (not self.isOccupied((6,7))) and
+            (not self.isCheck((5,7), 'w')) and
+            (not self.isCheck((6,7), 'w'))):
+            final['b-king'] = True
+        elif ((self.castle['b-queen']) and
+            (not self.isOccupied((3,7))) and
+            (not self.isOccupied((2,7))) and
+            (not self.isOccupied((1,7))) and
+            (not self.isCheck((7,7), 'w')) and
+            (not self.isCheck((2,7), 'w'))):
+            final['b-queen'] = True
+        return final
+        
     def possibleQueenMove(self, square, color):
         """Return list of possible squares a Queen on a given square can move to."""
         # combile rook and bishop moves
+        #TODO color optional
         bishop = self.possibleBishopMove(square,color)
         rook = self.possibleRookMove(square,color)
         allpos = rook + bishop
@@ -146,6 +181,7 @@ class Board(dict):
     def possibleBishopMove(self, square, color):
         """Return list of possible squares a Bishop on a given square can move to."""
         final = []
+        #TODO color optional
         
         # right,up
         xpos = square[0]
@@ -216,6 +252,7 @@ class Board(dict):
         
     def possibleKnightMove(self, square, color):
         """Return list of possible squares a Knight on a given square can move to."""
+        #TODO color optional
         xpos = square[0]
         ypos = square[1]
         final = []
@@ -229,6 +266,7 @@ class Board(dict):
     def possibleRookMove(self, square, color):
         """Return list of possible squares a Rook on a given square can move to."""
         final = []
+        #TODO color optional
 
         # rows
         xpos = square[0]
@@ -236,7 +274,10 @@ class Board(dict):
         while True:
             xpos += 1
             if (xpos,ypos) in self.pos_list:
-                if self.pieceColor((xpos,ypos)) == color:
+                if self.pieceColor((xpos,ypos)):
+                    if self.pieceColor((xpos,ypos)) == color:
+                        break
+                    final.append((xpos,ypos))
                     break
                 else:
                     final.append((xpos,ypos))
@@ -246,20 +287,25 @@ class Board(dict):
         while True:
             xpos -= 1
             if (xpos,ypos) in self.pos_list:
-                if self.pieceColor((xpos,ypos)) == color:
+                if self.pieceColor((xpos,ypos)):
+                    if self.pieceColor((xpos,ypos)) == color:
+                        break
+                    final.append((xpos,ypos))
                     break
                 else:
                     final.append((xpos,ypos))
             else:
                 break
-                
         # cols
         xpos = square[0]
         ypos = square[1]
         while True:
             ypos += 1
             if (xpos,ypos) in self.pos_list:
-                if self.pieceColor((xpos,ypos)) == color:
+                if self.pieceColor((xpos,ypos)):
+                    if self.pieceColor((xpos,ypos)) == color:
+                        break
+                    final.append((xpos,ypos))
                     break
                 else:
                     final.append((xpos,ypos))
@@ -270,7 +316,10 @@ class Board(dict):
         while True:
             ypos -= 1
             if (xpos,ypos) in self.pos_list:
-                if self.pieceColor((xpos,ypos)) == color:
+                if self.pieceColor((xpos,ypos)):
+                    if self.pieceColor((xpos,ypos)) == color:
+                        break
+                    final.append((xpos,ypos))
                     break
                 else:
                     final.append((xpos,ypos))
@@ -282,6 +331,7 @@ class Board(dict):
         
     def possiblePawnMove(self, square, color):
         """Return list of possible squares a Pawn on a given square can move to."""
+        #TODO color optional
         xpos = square[0]
         ypos = square[1]
         final = []
@@ -358,6 +408,13 @@ class Board(dict):
             return True
         else:
             return False
+            
+    def isCheck(self, square, color):
+        """Return true or false if a king of given color would be in check.
+        Relies on all possiblePieceMove() methods except king castling.
+        """
+        #TODO
+        pass
 
 starting_position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 A = Board()
