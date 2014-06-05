@@ -123,9 +123,10 @@ class Board(dict):
             else:
                 raise Exception
                 
-    def possibleKingMove(self, square, color):
+    def possibleKingMove(self, square, color=None):
         """Return list of possible squares a King on a given square can move to."""
-        #TODO color optional
+        if color is None:
+            color = self.to_move
         final = []
         possibles = [tuple(sum(x) for x in zip(square, (m,n))) for m in range(-1,2) for n in range(-1,2) if (m,n) != (0,0)]
         for pos in possibles:
@@ -169,19 +170,22 @@ class Board(dict):
             final['b-queen'] = True
         return final
         
-    def possibleQueenMove(self, square, color):
+    def possibleQueenMove(self, square, color=None):
         """Return list of possible squares a Queen on a given square can move to."""
+        if color is None:
+            color = self.to_move
         # combile rook and bishop moves
-        #TODO color optional
         bishop = self.possibleBishopMove(square,color)
         rook = self.possibleRookMove(square,color)
         allpos = rook + bishop
         return sorted(allpos)
         
-    def possibleBishopMove(self, square, color):
+    def possibleBishopMove(self, square, color=None):
         """Return list of possible squares a Bishop on a given square can move to."""
+        if color is None:
+            color = self.to_move
+            
         final = []
-        #TODO color optional
         
         # right,up
         xpos = square[0]
@@ -250,9 +254,10 @@ class Board(dict):
         
         return sorted(final)
         
-    def possibleKnightMove(self, square, color):
+    def possibleKnightMove(self, square, color=None):
         """Return list of possible squares a Knight on a given square can move to."""
-        #TODO color optional
+        if color is None:
+            color = self.to_move
         xpos = square[0]
         ypos = square[1]
         final = []
@@ -263,10 +268,11 @@ class Board(dict):
                 final = [pos for pos in final if self.pieceColor(pos) != color]
         return sorted(final)
         
-    def possibleRookMove(self, square, color):
+    def possibleRookMove(self, square, color=None):
         """Return list of possible squares a Rook on a given square can move to."""
+        if color is None:
+            color = self.to_move
         final = []
-        #TODO color optional
 
         # rows
         xpos = square[0]
@@ -329,9 +335,10 @@ class Board(dict):
 
         return sorted(final)
         
-    def possiblePawnMove(self, square, color):
+    def possiblePawnMove(self, square, color=None):
         """Return list of possible squares a Pawn on a given square can move to."""
-        #TODO color optional
+        if color is None:
+            color = self.to_move
         xpos = square[0]
         ypos = square[1]
         final = []

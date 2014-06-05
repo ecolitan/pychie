@@ -142,6 +142,7 @@ class TestBoard(unittest.TestCase):
     @unittest.skip('')
     def test_pieceColor(self):
         pass
+        #TODO
 
 if __name__ == '__main__':
     unittest.main()
