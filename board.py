@@ -86,7 +86,7 @@ class Board(dict):
                     alg_col = char
                     alg_col = ['a','b','c','d','e','f','g','h'].index(alg_col.lower())
                 elif char in list('12345678'):
-                    alg_row = int(char)
+                    alg_row = int(char)-1
                     self.ep = (alg_col,alg_row)
                 elif char == ' ':
                     field += 1
@@ -362,7 +362,7 @@ class Board(dict):
                     if self.pieceColor(pos) != color and self.pieceColor(pos):
                         final.append(pos)
             #ep
-            if self.ep in [(xpos-1,ypos),(xpos+1,ypos)]:
+            if self.ep in [(xpos-1,ypos+1),(xpos+1,ypos+1)]:
                 final.append(self.ep)
             
                 
@@ -385,7 +385,7 @@ class Board(dict):
                     if self.pieceColor(pos) != color:
                         final.append(pos)
             #ep
-            if self.ep in [(xpos-1,ypos),(xpos+1,ypos)]:
+            if self.ep in [(xpos-1,ypos-1),(xpos+1,ypos-1)]:
                 final.append(self.ep)
         return sorted(final)
         

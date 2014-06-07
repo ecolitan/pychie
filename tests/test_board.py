@@ -11,15 +11,18 @@ class TestBoard(unittest.TestCase):
         self.start_board = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
         self.test_board1 = "r1b1k2r/ppp2ppp/2nq4/3n2N1/2BP4/P7/1P1B1PPP/R2Q1K1R b kq - 2 12"
         self.test_board2 = "5r1r/2p3b1/p2p1Bk1/1p2P2p/3nPRb1/2NP4/PPP4K/5R2 w - - 2 21"
+        self.test_board3 = "rnbqkbnr/pp2pppp/8/2pP4/8/8/PPPP1PPP/RNBQKBNR w KQkq c6 0 3"
 
         self.Board_empty = Board()
         self.Board_start = Board()
         self.Board_test1 = Board()
         self.Board_test2 = Board()
+        self.Board_test3 = Board()
         self.Board_empty.setupPosition(self.empty_board)
         self.Board_start.setupPosition(self.start_board)
         self.Board_test1.setupPosition(self.test_board1)
         self.Board_test2.setupPosition(self.test_board2)
+        self.Board_test3.setupPosition(self.test_board3)
 
     def test_possibleKingMove(self):
         #complete
@@ -128,21 +131,42 @@ class TestBoard(unittest.TestCase):
         self.assertEqual(sq7, self.Board_test2.possibleRookMove(r7, 'b'))
     
     def test_possiblePawnMove(self):
+        #complete
         p1 = (0,1)
         p2 = (4,3)
+        p3 = (4,4)
+        p4 = (3,2)
+        p5 = (3,4)
             
         sq1 = sorted([(0,2),(0,3)])
         sq2 = sorted([(4,4)])
+        sq3 = sorted([(3,5),(4,5)])
+        sq4 = sorted([])
+        sq5 = sorted([(2,5),(3,5)])
 
         self.assertEqual(sq1, self.Board_empty.possiblePawnMove(p1, 'w'))
         self.assertEqual(sq2, self.Board_empty.possiblePawnMove(p2, 'w'))
-        #~ self.assertEqual(sq3, self.Board_start.possiblePawnMove(p3))
-        #~ self.assertEqual(sq4, self.Board_start.possiblePawnMove(p4))
+        self.assertEqual(sq3, self.Board_test2.possiblePawnMove(p3, 'w'))
+        self.assertEqual(sq4, self.Board_test2.possiblePawnMove(p4, 'w'))
+        self.assertEqual(sq5, self.Board_test3.possiblePawnMove(p5, 'w'))
+    
+    def test_pieceColor(self):
+        #complete
+        p1 = (3,0)
+        p2 = (7,7)
+        p3 = (0,4)
+        
+        color1 = 'w'
+        color2 = 'b'
+        color3 = None
+
+        self.assertEqual(color1, self.Board_test3.pieceColor(p1))
+        self.assertEqual(color2, self.Board_test3.pieceColor(p2))
+        self.assertEqual(color3, self.Board_test3.pieceColor(p3))
     
     @unittest.skip('')
-    def test_pieceColor(self):
+    def test_isCheck(self):
         pass
-        #TODO
-
+        
 if __name__ == '__main__':
     unittest.main()
