@@ -164,9 +164,12 @@ class TestBoard(unittest.TestCase):
         self.assertEqual(color2, self.Board_test3.pieceColor(p2))
         self.assertEqual(color3, self.Board_test3.pieceColor(p3))
     
-    @unittest.skip('')
     def test_isCheck(self):
-        pass
+        self.assertTrue(self.Board_test1.isCheck((4,4),'w'))
+        self.assertTrue(self.Board_test1.isCheck((4,4),'b'))
+        self.assertTrue(self.Board_test1.isCheck((1,3),'w'))
+        self.assertTrue(self.Board_test1.isCheck((1,3),'b'))
+        self.assertFalse(self.Board_test1.isCheck((0,7),'w'))
         
 if __name__ == '__main__':
     unittest.main()

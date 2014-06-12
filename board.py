@@ -389,6 +389,24 @@ class Board(dict):
                 final.append(self.ep)
         return sorted(final)
         
+    def possiblePawnAttacking(self, square, color=None):
+        """Return a list of the squares a Pawn in a given square attacks"""
+        if color is None:
+            color = self.to_move
+        xpos = square[0]
+        ypos = square[1]
+        final = []
+        if color == 'w':
+            squares = [(xpos-1,ypos+1),(xpos+1,ypos+1)]
+        elif color == 'b':
+            squares = [(xpos-1,ypos-1),(xpos+1,ypos-1)]
+            
+        for pos in squares:
+            if pos in self.pos_list:
+                final.append(pos)
+
+        return sorted(final)
+        
     def printBoard(self):
         """print a pretty board"""
         
@@ -416,31 +434,43 @@ class Board(dict):
         else:
             return False
             
+    def attackedSquares(self, square):
+        """Return list of attacked squares for whatever piece is on square or None
+        Pieces do not attack their own squares
+        """
+        piece = self[square]
+        color = self.pieceColor(square)
+        
+        if piece is None:
+            return None
+        elif piece.lower() == 'r':
+            return self.possibleRookMove(square,color)
+        elif piece.lower() == 'n':
+            return self.possibleKnightMove(square,color)
+        elif piece.lower() == 'b':
+            return self.possibleBishopMove(square,color)
+        elif piece.lower() == 'q':
+            return self.possibleQueenMove(square,color)
+        elif piece.lower() == 'k':
+            return self.possibleKingMove(square,color)
+        elif piece.lower() == 'p':
+            return self.possiblePawnAttacking(square,color)
+        else:
+            raise Exception
+    
     def isCheck(self, square, color):
         """Return true or false if a king of given color would be in check.
         Relies on all possiblePieceMove() methods except king castling.
         """
-        #TODO
-        pass
-
-starting_position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
-A = Board()
-A.setupPosition(starting_position)
-#~ A.printBoard()
-#~ A[(0,0)] = 'R'
-#~ A[(1,0)] = 'N'
-#~ A[(2,0)] = 'B'
-#~ A[(3,0)] = 'Q'
-#~ A[(4,0)] = 'K'
-#~ A[(5,0)] = 'B'
-#~ A[(6,0)] = 'N'
-#~ A[(7,0)] = 'R'
-#~ A[(0,1)] = 'P'
-#~ A[(1,1)] = 'P'
-#~ A[(2,1)] = 'P'
-#~ A[(3,1)] = 'P'
-#~ A[(4,1)] = 'P'
-#~ A[(5,1)] = 'P'
-#~ A[(6,1)] = 'P'
-#~ A[(7,1)] = 'P'
-#~ A.printBoard()
+        for pos in self.pos_list:
+            if ((color == 'w' and self.pieceColor(pos) == 'b') or
+               (color == 'b' and self.pieceColor(pos) == 'w')):
+                if square in self.attackedSquares(pos):
+                    return True
+        return False
+        
+if __name__ == '__main__':
+    starting_position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+    A = Board()
+    A.setupPosition(starting_position)
+    A.printBoard()
