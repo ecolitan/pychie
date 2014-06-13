@@ -158,15 +158,15 @@ class Board(dict):
         elif ((self.castle['b-king']) and
             (not self.isOccupied((5,7))) and
             (not self.isOccupied((6,7))) and
-            (not self.isCheck((5,7), 'w')) and
-            (not self.isCheck((6,7), 'w'))):
+            (not self.isCheck((5,7), 'b')) and
+            (not self.isCheck((6,7), 'b'))):
             final['b-king'] = True
         elif ((self.castle['b-queen']) and
             (not self.isOccupied((3,7))) and
             (not self.isOccupied((2,7))) and
             (not self.isOccupied((1,7))) and
-            (not self.isCheck((7,7), 'w')) and
-            (not self.isCheck((2,7), 'w'))):
+            (not self.isCheck((7,7), 'b')) and
+            (not self.isCheck((2,7), 'b'))):
             final['b-queen'] = True
         return final
         

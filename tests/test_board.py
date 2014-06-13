@@ -40,11 +40,13 @@ class TestBoard(unittest.TestCase):
         self.assertEqual(sq3, self.Board_start.possibleKingMove(k3, 'w'))
         self.assertEqual(sq4, self.Board_test1.possibleKingMove(k4, 'w'))
 
-    @unittest.skip('')
+    #~ @unittest.skip('')
     def test_possibleCastling(self):
-        k1 = (4,7)
-        sq1 = sorted([(3,7),(3,6),(4,6),(5,7),(6,7)])
-        self.assertEqual(sq1, self.Board_test1.possibleCastling(k1, 'b'))
+        #complete
+        self.assertTrue(self.Board_test1.possibleCastling()['b-king'])
+        self.assertFalse(self.Board_test1.possibleCastling()['w-king'])
+        self.assertFalse(self.Board_test1.possibleCastling()['b-queen'])
+        self.assertFalse(self.Board_test1.possibleCastling()['w-queen'])
         
     def test_possibleQueenMove(self):
         #complete
@@ -165,6 +167,7 @@ class TestBoard(unittest.TestCase):
         self.assertEqual(color3, self.Board_test3.pieceColor(p3))
     
     def test_isCheck(self):
+        #complete
         self.assertTrue(self.Board_test1.isCheck((4,4),'w'))
         self.assertTrue(self.Board_test1.isCheck((4,4),'b'))
         self.assertTrue(self.Board_test1.isCheck((1,3),'w'))
